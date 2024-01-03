@@ -1,0 +1,49 @@
+<!-- Modal for image -->
+<div class="modal fade" id="imageModal{{ loop.index }}" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel{{ loop.index }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel{{ loop.index }}">Image Meme Creation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="{{ url_for('views.serve_image', filename=image) }}" class="img-fluid" alt="Random Image" id="centeredImage{{ loop.index }}">
+                <!-- Add meme creation form with a text input field -->
+                <form method="POST" action="{{ url_for('views.create_meme') }}">
+                    <input type="hidden" name="image_filename" value="{{ image }}">
+                    <div class="form-group mt-3">
+                        <label for="memeText">Enter Meme Text:</label>
+                        <textarea class="form-control" id="memeText" name="memeText" placeholder="Type your meme text here"></textarea>
+                    </div>
+                    <!-- Add any additional form fields or customization as needed -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!-- Add a submit button to submit the meme creation form -->
+                <button type="submit" class="btn btn-primary">Create Meme</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Center and scale the image in the modal when it is shown
+    $('#imageModal{{ loop.index }}').on('shown.bs.modal', function () {
+        var img = $('#centeredImage{{ loop.index }}');
+        var modal = $(this);
+        var modalBody = modal.find('.modal-body');
+
+        // Calculate the scaling factor based on the modal's dimensions
+        var scale = Math.min(modalBody.width() / img.width(), modalBody.height() / img.height());
+
+        // Apply the scaling and center the image
+        img.css({
+            transform: 'scale(' + scale + ')',
+            marginLeft: (modalBody.width() - img.width() * scale) / 2,
+            marginTop: (modalBody.height() - img.height() * scale) / 2
+        });
+    });
+</script>

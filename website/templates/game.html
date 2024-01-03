@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Game{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 align="center">Game</h1>
+        <!-- Display three random images -->
+        <div class="row">
+            {% for image in selected_images %}
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#imageModal{{ loop.index if loop is defined else '' }}">
+                        <img src="{{ url_for('views.serve_image', filename=image) }}" class="img-fluid" alt="Random Image">
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Modals for image memes -->
+    {% for image in selected_images %}
+        {% set current_image = image %}
+        {% with loop_index = loop.index if loop is defined else '' %}
+            {% include 'meme_modal.html' %}
+        {% endwith %}
+    {% endfor %}
+{% endblock %}
